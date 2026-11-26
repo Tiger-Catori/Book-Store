@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import BookCardComponent from '../components/BookCard';
 import { useState, useEffect } from 'react';
-import { getListOfBooks } from '../api/http';
+import { deleteBookByID, getListOfBooks } from '../api/http';
 
 const HomeScreenComponent = () => {
   return (
@@ -14,12 +14,27 @@ export default HomeScreenComponent;
 
 const HomeScreen = () => {
   const [bookList, setBookList] = useState();
-  useEffect(() => {
+
+  const getListOfBooksFN = () => {
     getListOfBooks({
       onSuccess: books => setBookList(books),
       onError: err => console.log(err)
     })
+  }
+
+  useEffect(() => {
+    getListOfBooksFN()
   }, [])
+
+  // Deleting book functionality
+  const onDeleteItem = (item) => {
+    console.log(item.id)
+    deleteBookByID({
+      onSuccess: () => getListOfBooksFN(),
+      onError: (error) => console.log(error),
+      itemID: item.id
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,6 +46,7 @@ const HomeScreen = () => {
           authorName={item.name_of_author}
           price={item.price_of_book}
           imageURI={item.cover}
+          onDeleteItem={() => onDeleteItem(item)}
         />}
       />
     </SafeAreaView>

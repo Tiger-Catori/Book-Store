@@ -1,32 +1,37 @@
-import { Axios } from "axios";
+import axios from "axios";
 import { Alert } from "react-native";
 
 const endpointURL = "https://6b05739bdb01cf4636088d83.mockapi.io/books"
 
-const getListOfBooks = async () => {
+export const getListOfBooks = async ({onSuccess, onError}) => {
   try {
     const response = await axios.get(endpointURL);
-    console.log(JSON.stringify(response.data, null, 3))
-    setBookList(response.data)
+    console.log(JSON.stringify(response.data, null))
+    onSuccess && onSuccess(response.data)
   } catch (error) {
+    onError && onError(error)
     console.log("An error occurred with getting the list of books", error)
   }
 }
 
-const getBookByID = async () => {
+export const getBookByID = async ({onSuccess, onError}) => {
   try {
     const response = await axios.get(`${endpointURL}/5`)
     console.log(JSON.stringify(response.data, null, 3))
+    onSuccess && onSuccess(response.data)
   } catch (error) {
+    onError && onError(error)
     console.log("An error occurred with getting a book", error)
   }
 }
 
-const deleteBookByID = async () => {
+export const deleteBookByID = async ({onSuccess, onError}) => {
   try {
     const response = await axios.delete(`${endpointURL}/3`)
     Alert.alert("Book Is Deleted Successfully")
+    onSuccess && onSuccess(response.data)
   } catch (error) {
+    onError && onError(error)
     console.log(error)
   }
 }
@@ -38,21 +43,25 @@ const body = {
   email_of_seller: "angel@yahoo.co.uk",
 }
 
-const createBook = async () => {
+export const createBook = async ({onSuccess, onError}) => {
   try {
     const response = await axios.post(endpointURL, body)
     Alert.alert("Book Has Been Created!")
-    getListOfBooks()
+    onSuccess && onSuccess(response.data)
   } catch (error) {
+    onError && onError(error)
     console.log(error)
   }
 }
 
-const updateBook = async () => {
+export const updateBook = async ({onSuccess, onError}) => {
   try {
     const response = await axios.put(`${endpointURL}/3`, body)
+
     Alert.alert("Book has been updated!")
+    onSuccess && onSuccess(response.data)
   } catch (error) {
+    onError && onError(error)
     console.log(error)
   }
 }

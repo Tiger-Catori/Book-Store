@@ -3,27 +3,32 @@ import { s, vs } from 'react-native-size-matters'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 
-const BookCardComponent = () => {
+const BookCardComponent = ({title, authorName, price, imageURI}) => {
   return (
-    <BookCard />
+    <BookCard
+      title={title}
+      authorName={authorName}
+      price={price}
+      imageURI={imageURI}
+    />
   )
 }
 export default BookCardComponent;
 
-const BookCard = () => {
+const BookCard = ({title, authorName, price, imageURI}) => {
   return (
     <View style={styles.container}>
       {/* Image Section */}
       <Image
-        source={{uri: 'https://fastly.picsum.photos/id/268/1937/3225.jpg?hmac=oLhql5SAsQR5mAFJLx7HPRO3yCySAMv_BYMiwoYeIts'}}
+        source={{uri: imageURI}}
         style={styles.coverImage}
       />
 
       {/* Details Section */}
       <View style={styles.detailsContainer}>
-        <Text style={styles.bookName}>Seaside</Text>
-        <Text style={styles.authorName}>Olivia Wilson</Text>
-        <Text style={styles.price}>$25.00</Text>
+        <Text style={styles.bookName}>{title}</Text>
+        <Text style={styles.authorName}>{authorName}</Text>
+        <Text style={styles.price}>${price}</Text>
       </View>
 
       {/* Delete & Edit Buttons */}

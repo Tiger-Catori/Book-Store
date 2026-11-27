@@ -12,20 +12,20 @@ export default AddButtonComponent;
 const AddButton = ({onPress}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <AntDesign name="plus" size={50} color="#fff" />
+      <AntDesign name="plus" size={30} color="#fff" />
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: vs(80),
-    width: s(80),
+    height: vs(60),
+    width: s(60),
     backgroundColor: '#1273de',
-    borderRadius: s(40),
+    borderRadius: s(30),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginBottom: s(30)
+    marginBottom: s(0)
   }
 })

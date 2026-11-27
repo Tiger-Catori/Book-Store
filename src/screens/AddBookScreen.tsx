@@ -5,25 +5,27 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {vs, s} from 'react-native-size-matters'
 import AppTextInputComponent from "../components/AppTextInput";
 import AppButtonComponent from "../components/AppButton";
-import { createBook } from "../api/http";
+import { createBook, updateBook } from "../api/http";
 
-const AddBookScreenComponent = ({onCloseIconPress, onCreateSuccess}) => {
+const AddBookScreenComponent = ({onCloseIconPress, onCreateSuccess, selectedItem}) => {
   return (
     <AddBookScreen
       onCloseIconPress={onCloseIconPress}
       onCreateSuccess={onCreateSuccess}
+      selectedItem={selectedItem}
     />
   )
 }
 
 export default AddBookScreenComponent;
 
-const AddBookScreen = ({ onCloseIconPress, onCreateSuccess }) => {
+const AddBookScreen = ({ onCloseIconPress, onCreateSuccess, selectedItem }) => {
 
-  const [bookName, setBookName] = useState("")
-  const [authorName, setAuthorName] = useState("")
-  const [coverURL, setCoverURL] = useState("")
-  const [price, setPrice] = useState("")
+  const [bookName, setBookName] = useState(selectedItem?.book_title ?? "")
+  const [authorName, setAuthorName] = useState(selectedItem?.name_of_author ?? "")
+  const [coverURL, setCoverURL] = useState(selectedItem?.cover ?? "")
+  const [price, setPrice] = useState(selectedItem?.price_of_book ?? "")
+
 
   const createNewBook = () => {
     createBook({
@@ -41,9 +43,26 @@ const AddBookScreen = ({ onCloseIconPress, onCreateSuccess }) => {
     })
   }
 
+  const editBook = () => {
+    updateBook({
+      ID: selectedItem?.id,
+      body: {
+        book_title: bookName,
+        name_of_author: authorName,
+        price_of_book: price,
+        cover: coverURL
+      },
+      onSuccess: () => {
+        onCloseIconPress()
+        onCreateSuccess()
+      },
+      onError: (err) => {Alert.alert("There is an error")}
+    })
+  }
+
   return (
     <SafeAreaView>
-      <Ionicons name="close-circle" size={40} color="#e81d1d" onPress={onCloseIconPress} />
+      <Ionicons style={styles.close} name="close-circle" size={40} color="#e81d1d" onPress={onCloseIconPress} />
       <View style={styles.body}>
         <Text style={styles.title}>Book Details</Text>
         <AppTextInputComponent
@@ -67,7 +86,7 @@ const AddBookScreen = ({ onCloseIconPress, onCreateSuccess }) => {
           placeholder={"Book Price"}
           keyboardType={'numeric'}
         />
-        <AppButtonComponent onPress={createNewBook}/>
+        <AppButtonComponent onPress={!!selectedItem ? editBook : createNewBook}/>
       </View>
     </SafeAreaView>
   )
@@ -86,5 +105,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: s(16),
     marginBottom: vs(20)
+  },
+  close: {
+    margin: s(4),
+    marginLeft:'auto'
   }
 })

@@ -3,7 +3,7 @@ import { s, vs } from 'react-native-size-matters'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 
-const BookCardComponent = ({title, authorName, price, imageURI, onDeleteItem}) => {
+const BookCardComponent = ({title, authorName, price, imageURI, onDeleteItem, onEditItem}) => {
   return (
     <BookCard
       title={title}
@@ -11,12 +11,13 @@ const BookCardComponent = ({title, authorName, price, imageURI, onDeleteItem}) =
       price={price}
       imageURI={imageURI}
       onDeleteItem={onDeleteItem}
+      onEditItem={onEditItem}
     />
   )
 }
 export default BookCardComponent;
 
-const BookCard = ({title, authorName, price, imageURI, onDeleteItem}) => {
+const BookCard = ({title, authorName, price, imageURI, onDeleteItem, onEditItem}) => {
   return (
     <View style={styles.container}>
       {/* Image Section */}
@@ -37,7 +38,7 @@ const BookCard = ({title, authorName, price, imageURI, onDeleteItem}) => {
         <TouchableOpacity style={styles.circleButton} onPress={onDeleteItem}>
           <MaterialIcons name="delete-outline" size={24} color="red" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.circleButton}>
+        <TouchableOpacity style={styles.circleButton} onPress={onEditItem}>
           <Feather name="edit" size={24} color="#25a" />
         </TouchableOpacity>
       </View>

@@ -36,14 +36,7 @@ export const deleteBookByID = async ({onSuccess, onError, itemID}) => {
   }
 }
 
-const body = {
-  name_of_author: "Mark Hayward",
-  cover: "https://picsum.org/500/300.jpg",
-  price_of_book: "40.00",
-  email_of_seller: "angel@yahoo.co.uk",
-}
-
-export const createBook = async ({onSuccess, onError}) => {
+export const createBook = async ({onSuccess, onError, body}) => {
   try {
     const response = await axios.post(endpointURL, body)
     Alert.alert("Book Has Been Created!")

@@ -54,7 +54,10 @@ const HomeScreen = () => {
       />
       <AddButtonComponent onPress={() => setModalVisible(true)} />
       <Modal animationType='slide' visible={modalVisible}>
-        <AddBookScreenComponent  onCloseIconPress={() => setModalVisible(false)}/>
+        <AddBookScreenComponent
+          onCloseIconPress={() => setModalVisible(false)}
+          onCreateSuccess={() => getListOfBooksFN()}
+        />
       </Modal>
     </SafeAreaView>
   )

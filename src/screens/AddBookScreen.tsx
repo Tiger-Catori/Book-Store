@@ -1,23 +1,45 @@
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Alert } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {vs, s} from 'react-native-size-matters'
 import AppTextInputComponent from "../components/AppTextInput";
 import AppButtonComponent from "../components/AppButton";
+import { createBook } from "../api/http";
 
-const AddBookScreenComponent = ({onCloseIconPress}) => {
-  return <AddBookScreen onCloseIconPress={onCloseIconPress}/>
+const AddBookScreenComponent = ({onCloseIconPress, onCreateSuccess}) => {
+  return (
+    <AddBookScreen
+      onCloseIconPress={onCloseIconPress}
+      onCreateSuccess={onCreateSuccess}
+    />
+  )
 }
 
 export default AddBookScreenComponent;
 
-const AddBookScreen = ({ onCloseIconPress }) => {
+const AddBookScreen = ({ onCloseIconPress, onCreateSuccess }) => {
 
   const [bookName, setBookName] = useState("")
   const [authorName, setAuthorName] = useState("")
   const [coverURL, setCoverURL] = useState("")
   const [price, setPrice] = useState("")
+
+  const createNewBook = () => {
+    createBook({
+      body: {
+        book_title: bookName,
+        name_of_author: authorName,
+        price_of_book: price,
+        cover: coverURL
+      },
+      onSuccess: () => {
+        onCloseIconPress()
+        onCreateSuccess()
+      },
+      onError: (err) => {Alert.alert("There is an error")}
+    })
+  }
 
   return (
     <SafeAreaView>
@@ -45,7 +67,7 @@ const AddBookScreen = ({ onCloseIconPress }) => {
           placeholder={"Book Price"}
           keyboardType={'numeric'}
         />
-        <AppButtonComponent onPress={onCloseIconPress}/>
+        <AppButtonComponent onPress={createNewBook}/>
       </View>
     </SafeAreaView>
   )
